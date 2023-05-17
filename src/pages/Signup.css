@@ -1,0 +1,34 @@
+.signup__image--container{
+    background-image: url(https://antimatter.vn/wp-content/uploads/2022/04/hinh-anh-songoku-cap-cuoi-1.jpg) ;
+    height: 100vh;
+    background-size: cover;
+}
+
+.signup__form--container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+}
+
+.login__image--container{
+    background-image: url(https://antimatter.vn/wp-content/uploads/2022/04/hinh-anh-songoku-cap-cuoi-1.jpg) ;
+    height: 100vh;
+    background-size: cover;
+}
+
+.login__form--container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+}
+
+@media  screen and (max-width: 756px){
+    .login__image--container,
+    .signup__image--container {
+        display: none;
+    }
+}
