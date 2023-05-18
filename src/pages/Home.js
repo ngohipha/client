@@ -7,7 +7,7 @@ import "./Home.css";
 import axios from "../axios";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProducts } from "../features/productSlice";
-import ProductPreview from "./ProductPreview";
+import ProductPreview from "../components/ProductPreview";
 const Home = () => {
   const dispatch = useDispatch()
   const products = useSelector(state => state.products);
