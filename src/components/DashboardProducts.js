@@ -26,7 +26,7 @@ function DashboardProducts() {
                 <td>{name}</td>
                 <td>{price}</td>
                 <td>
-                    <Button onClick={() => handleDeleteProduct(_id, user._id)} disabled={isLoading}>
+                    <Button onClick={() => handleDeleteProduct(_id, user._id)} disabled={isLoading} >
                         Delete
                     </Button>
                     <Link to={`/product/${_id}/edit`} className="btn btn-warning">

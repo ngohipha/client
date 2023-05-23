@@ -47,7 +47,7 @@ export default function CheckoutForm() {
 }
 
   return (
-    <Col md={7} className="cart-payment-container">
+    <Col className="cart-payment-container">
       <Form onSubmit={handlePay}>
         <Row>
           {alertMessage && <Alert> {alertMessage}</Alert>}

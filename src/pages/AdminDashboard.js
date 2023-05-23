@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Nav, Tab, Col, Row } from "react-bootstrap";
-// import ClientsAdminPage from "../components/ClientsAdminPage";
+import ClientsAdminPage from "../components/ClientsAdminPage";
 import DashboardProducts from "../components/DashboardProducts";
-// import OrdersAdminPage from "../components/OrdersAdminPage";
+import OrdersAdminPage from "../components/OrderAdminPage";
 function AdminDashboard() {
     return (
         <Container>
@@ -27,10 +27,10 @@ function AdminDashboard() {
                                 <DashboardProducts />
                             </Tab.Pane>
                             <Tab.Pane eventKey="orders">
-                                {/* <OrdersAdminPage /> */}
+                                <OrdersAdminPage />
                             </Tab.Pane>
                             <Tab.Pane eventKey="clients">
-                                {/* <ClientsAdminPage /> */}
+                                <ClientsAdminPage />
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>

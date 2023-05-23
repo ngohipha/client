@@ -3,16 +3,18 @@ import "./CartPage.css";
 import { useSelector } from "react-redux";
 import { Alert, Col, Container, Row, Table } from "react-bootstrap";
 import "./CartPage.css";
-import {loadStripe} from '@stripe/stripe-js'
-import {Elements} from '@stripe/react-stripe-js'
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import {
   useIncreaseCartProductMutation,
   useDecreaseCartProductMutation,
   useRemoveFromCartMutation,
 } from "../services/appApi";
-import CheckoutForm from '../components/CheckoutForm'
+import CheckoutForm from "../components/CheckoutForm";
 
-const  stripePromise = loadStripe('pk_test_51MloUNJFd7AGfgjcyPzi9Bj2sIrE0TCHggRD0gbBwo2Ofo33jHffN4OAec3XeZRvglklKshz4BCVD5KySfA9aGMU00XT8odsD5')
+const stripePromise = loadStripe(
+  "pk_test_51MloUNJFd7AGfgjcyPzi9Bj2sIrE0TCHggRD0gbBwo2Ofo33jHffN4OAec3XeZRvglklKshz4BCVD5KySfA9aGMU00XT8odsD5"
+);
 function CartPage() {
   const user = useSelector((state) => state.user);
   const products = useSelector((state) => state.products);
@@ -21,7 +23,7 @@ function CartPage() {
   const [increaseCart] = useIncreaseCartProductMutation();
   const [decreaseCart] = useDecreaseCartProductMutation();
   const [removeFromCart, { isLoading }] = useRemoveFromCartMutation();
-  
+
   function handleDecrease(product) {
     const quantity = user.cart.count;
     if (quantity <= 0) return alert("Can't proceed");
@@ -30,18 +32,21 @@ function CartPage() {
   return (
     <Container style={{ minHeight: "95vh" }} className="cart-container">
       <Row>
-        <Col md={7}>
+        <Col>
           <h1 className="pt-2 h3">Shopping cart</h1>
           {cart.length === 0 ? (
             <Alert variant="info">
               Shopping cart is empty.Add products to your cart
             </Alert>
           ) : (
-            <Elements stripe={stripePromise} > <CheckoutForm/> </Elements>
+            <Elements stripe={stripePromise}>
+              {" "}
+              <CheckoutForm />{" "}
+            </Elements>
           )}
         </Col>
-        <Col md={5}>
-          {cart.length > 0 && (
+        {cart.length > 0 && (
+          <Col md={5}>
             <>
               <Table responsive="sm" className="cart-table">
                 <thead>
@@ -117,8 +122,8 @@ function CartPage() {
                 <h3 className="h4 pt-4">Total: {user.cart.total}VND</h3>
               </div>
             </>
-          )}
-        </Col>
+          </Col>
+        )}
       </Row>
     </Container>
   );
