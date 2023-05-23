@@ -1,20 +1,18 @@
-import React, { useState } from "react";
-import "./CartPage.css";
-import { useSelector } from "react-redux";
-import { Alert, Col, Container, Row, Table } from "react-bootstrap";
-import "./CartPage.css";
-import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import React from "react";
+import { Alert, Col, Container, Row, Table } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import CheckoutForm from "../components/CheckoutForm";
 import {
   useIncreaseCartProductMutation,
   useDecreaseCartProductMutation,
   useRemoveFromCartMutation,
 } from "../services/appApi";
-import CheckoutForm from "../components/CheckoutForm";
+import "./CartPage.css";
 
-const stripePromise = loadStripe(
-  "pk_test_51MloUNJFd7AGfgjcyPzi9Bj2sIrE0TCHggRD0gbBwo2Ofo33jHffN4OAec3XeZRvglklKshz4BCVD5KySfA9aGMU00XT8odsD5"
-);
+const stripePromise = loadStripe("your_stripe_publishable_key");
+
 function CartPage() {
   const user = useSelector((state) => state.user);
   const products = useSelector((state) => state.products);
@@ -29,6 +27,7 @@ function CartPage() {
     if (quantity <= 0) return alert("Can't proceed");
     decreaseCart(product);
   }
+
   return (
     <Container style={{ minHeight: "95vh" }} className="cart-container">
       <Row>
@@ -36,12 +35,11 @@ function CartPage() {
           <h1 className="pt-2 h3">Shopping cart</h1>
           {cart.length === 0 ? (
             <Alert variant="info">
-              Shopping cart is empty.Add products to your cart
+              Shopping cart is empty. Add products to your cart
             </Alert>
           ) : (
             <Elements stripe={stripePromise}>
-              {" "}
-              <CheckoutForm />{" "}
+              <CheckoutForm />
             </Elements>
           )}
         </Col>
@@ -84,10 +82,9 @@ function CartPage() {
                             height: 100,
                             objectFit: "cover",
                           }}
-                          alt=""
                         />
                       </td>
-                      <td>{item.price}VND</td>
+                      <td>${item.price}</td>
                       <td>
                         <span className="quantity-indicator">
                           <i
@@ -113,13 +110,13 @@ function CartPage() {
                           ></i>
                         </span>
                       </td>
-                      <td>{item.price * user.cart[item._id]}VND</td>
+                      <td>${item.price * user.cart[item._id]}</td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
               <div>
-                <h3 className="h4 pt-4">Total: {user.cart.total}VND</h3>
+                <h3 className="h4 pt-4">Total: ${user.cart.total}</h3>
               </div>
             </>
           </Col>
