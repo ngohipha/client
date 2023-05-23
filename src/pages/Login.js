@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert, Toast } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import './Home'
-import  {useLoginMutation} from '../services/appApi'
+import  { useLoginMutation} from '../services/appApi'
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login , {isError, isLoading,error}] = useLoginMutation();
+
+  
   function handleLogin(e) {
     e.preventDefault();
     login({email, password});
   }
+  
   return (
     <Container>
       <Row>
@@ -44,6 +47,9 @@ const Login = () => {
             </Form.Group>
             <p className="">
               Don't have an account? <Link to="/signup">Create account</Link>
+            </p>
+            <p className="">
+            You forgot your password? <Link to="/forgotpassword">Forgot Password</Link>
             </p>
           </Form>
         </Col>

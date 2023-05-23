@@ -11,6 +11,7 @@ function OrdersAdminPage() {
   const products = useSelector((state) => state.products);
   const [orderToShow, setOrderToShow] = useState([]);
   const [show, setShow] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleClose = () => setShow(false);
 
@@ -32,11 +33,10 @@ function OrdersAdminPage() {
     setShow(true);
     setOrderToShow(productsToShow);
   }
-
   useEffect(() => {
     setLoading(true);
     axios
-      .get("/orders")
+      .get("/orders", { params: { searchQuery } })
       .then(({ data }) => {
         // Sắp xếp danh sách đơn hàng theo thứ tự mới nhất đến cũ nhất
         const sortedOrders = data.sort((a, b) => b.date - a.date);
@@ -48,7 +48,7 @@ function OrdersAdminPage() {
         setLoading(false);
         console.log(error);
       });
-  }, []);
+  }, [searchQuery]);
   if (loading) {
     return <Loading />;
   }
@@ -58,6 +58,12 @@ function OrdersAdminPage() {
   }
 
   function TableRow({ _id, count, owner, total, status, products, address }) {
+    if (
+      searchQuery &&
+      owner?.name.toLowerCase().indexOf(searchQuery.toLowerCase()) === -1
+    ) {
+      return null;
+    }
     return (
       <tr>
         <td>{_id}</td>
@@ -65,6 +71,7 @@ function OrdersAdminPage() {
         <td>{count}</td>
         <td>{total}</td>
         <td>{address}</td>
+
         <td>
           {status === "processing" ? (
             <Button size="sm" onClick={() => markShipped(_id, owner?._id)}>
@@ -88,6 +95,12 @@ function OrdersAdminPage() {
 
   return (
     <>
+      <input
+        type="text"
+        placeholder="Search by client name"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <Table responsive striped bordered hover>
         <thead>
           <tr>
@@ -96,6 +109,8 @@ function OrdersAdminPage() {
             <th>Items</th>
             <th>Order Total</th>
             <th>Address</th>
+            <th>STT</th>
+            <th>View</th>
           </tr>
         </thead>
         <tbody>

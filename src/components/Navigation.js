@@ -48,7 +48,7 @@ const Navigation = () => {
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart"></i>
-                  {user && user.cart.count > 0 && (
+                  {user && user.cart?.count > 0 && (
                     <span className="badge badge-warning" id="cartcount">
                       {user.cart.count}
                     </span>

@@ -17,6 +17,9 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { addNotification } from "./features/userSlice";
 import Navigation from "./components/Navigation";
+import FinalSignup from "./components/FinalSignup";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -65,6 +68,9 @@ function App() {
           <Route path="/category/:category" element={<CategoryPage />} />
 
           <Route path="/new-product" element={<NewProduct />} />
+          <Route path='/finalregister/:status' element={<FinalSignup />} />
+          <Route path='/forgotpassword' element={<ForgotPassword />} />
+          <Route path='/reset-password/:token' element={<ResetPassword />} />
 
           <Route path="*" element={<Home />} />
         </Routes>

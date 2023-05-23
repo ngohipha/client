@@ -86,11 +86,24 @@ export const appApi = createApi({
         method: "POST"
       })
     }), 
-    
+    forgotPassword:builder.mutation({
+      query: (body)=>({
+        url: 'users/forgotpassword',
+        method: "POST",
+        body,
+      })
+    }),
+    resetPassword:builder.mutation({
+      query: (body)=>({
+        url: 'users/resetpassword/',
+        method: "PATCH",
+        body,
+      })
+    })
   }),
 });
 
 
-export const {useSignupMutation , useLoginMutation, useCreateProductMutation , useAddToCartMutation,useDecreaseCartProductMutation,useIncreaseCartProductMutation,useRemoveFromCartMutation,useCreateOrderMutation , useDeleteProductMutation,useUpdateProductMutation } = appApi
+export const {useSignupMutation , useLoginMutation, useCreateProductMutation , useAddToCartMutation,useDecreaseCartProductMutation,useIncreaseCartProductMutation,useRemoveFromCartMutation,useCreateOrderMutation , useDeleteProductMutation,useUpdateProductMutation ,useForgotPasswordMutation,useResetPasswordMutation } = appApi
 
 export default appApi;
