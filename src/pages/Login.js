@@ -20,39 +20,35 @@ const Login = () => {
   const navigate = useNavigate();
 
   async function handleLogin(e) {
-  e.preventDefault();
-  const response = await login({ email, password });
-
-  if (response.data && response.data.success) {
-    navigate("/home");
-  } else {
-    if (response.data && response.data.mes === "Invalid email or password.") {
-      Swal.fire({
-        icon: "error",
-        title: "Email hoặc mật khẩu không hợp lệ",
-        text: "Vui lòng kiểm tra lại email và mật khẩu và thử lại.",
-      });
-    } else if (response.data && response.data.mes === "Vui lòng xác nhận email của bạn.") {
-      Swal.fire({
-        icon: "error",
-        title: "Tài khoản chưa được xác thực",
-        text: "Vui lòng xác thực tài khoản để đăng nhập.",
-      });
-    } else if (response.data && response.data.mes === "Email not found.") {
-      Swal.fire({
-        icon: "error",
-        title: "Email chưa được đăng ký",
-        text: "Vui lòng đăng ký tài khoản trước khi đăng nhập.",
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Sai thông tin đăng nhập ",
-        text: "Vui lòng kiểm tra lại thông tin.",
-      });
+    e.preventDefault();
+    try {
+      const response = await login({ email, password });
+  
+      if (response.data) {
+        navigate("/home");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Thông tin đăng nhập không đúng",
+          text: "Vui lòng kiểm tra lại thông tin đăng nhập.",
+        });
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Tài khoản chưa được xác thực qua email",
+          text: "Vui lòng kiểm tra email và hoàn tất quá trình xác thực.",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi đăng nhập",
+          text: "Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại sau.",
+        });
+      }
     }
   }
-}
 
   return (
     <Container>

@@ -18,8 +18,8 @@ export default function Signup() {
 
   function validateForm() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^.{6,12}$/;
-    const mobileRegex = /^\d{10}$/;
+    const passwordRegex = /^.{5,11}$/;
+    const mobileRegex = /^\d{9}$/;
 
     const isEmailValid = emailRegex.test(email);
     const isPasswordValid = passwordRegex.test(password);
@@ -84,35 +84,7 @@ export default function Signup() {
                 }}
               />
             </Form.Group>
-            <Form.Group>
-              <Form.Label>Số điện thoại</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Số điện thoại"
-                value={mobile}
-                required
-                onChange={(e) => {
-                  setMobile(e.target.value);
-                  validateForm();
-                }}
-                pattern="[0-9]*" // Chỉ cho phép nhập số
-                onKeyPress={(e) => {
-                  const charCode = e.which ? e.which : e.keyCode;
-                  if (
-                    (charCode !== 8 && charCode !== 0 && charCode < 48) ||
-                    charCode > 57
-                  ) {
-                    e.preventDefault();
-                  }
-                }}
-                className={hasError ? "is-invalid" : ""}
-              />
-              {hasError && (
-                <div className="error-message">
-                  Vui lòng nhập số điện thoại hợp lệ.
-                </div>
-              )}
-            </Form.Group>
+            
             <Form.Group>
               <Form.Label>Email</Form.Label>
               <Form.Control
@@ -124,6 +96,7 @@ export default function Signup() {
                   setEmail(e.target.value);
                   validateForm();
                 }}
+                className={emailError ? "is-invalid" : ""}
               />
               {emailError && <div className="error-message">{emailError}</div>}
             </Form.Group>
@@ -138,9 +111,28 @@ export default function Signup() {
                   setPassword(e.target.value);
                   validateForm();
                 }}
+                className={passwordError ? "is-invalid" : ""}
               />
               {passwordError && (
                 <div className="error-message">{passwordError}</div>
+              )}
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Mobile</Form.Label>
+              <Form.Control
+                type="mobile"
+                placeholder="Nhập số điện thoại"
+                value={mobile}
+                required
+                onChange={(e) => {
+                  setMobile(e.target.value);
+                  validateForm();
+                }}
+                pattern="[0-9]*"
+                className={mobileError ? "is-invalid" : ""}
+              />
+              {mobileError && (
+                <div className="error-message">{mobileError}</div>
               )}
             </Form.Group>
             <Form.Group>
