@@ -1,76 +1,159 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
-import { useNavigate ,Link } from "react-router-dom";
-import "./Signup.css";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import Swal from "sweetalert2";
 import { useSignupMutation } from "../services/appApi";
+
 export default function Signup() {
-  const navigate = useNavigate(); // Sử dụng hook useNavigate
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
-  const [signup, { error, isLoading, isError }] = useSignupMutation();
-  
+  const [hasError, setHasError] = useState(false);
+  const [signup] = useSignupMutation();
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [mobileError, setMobileError] = useState("");
+
+  function validateForm() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^.{6,12}$/;
+    const mobileRegex = /^\d{10}$/;
+
+    const isEmailValid = emailRegex.test(email);
+    const isPasswordValid = passwordRegex.test(password);
+    const isMobileValid = mobileRegex.test(mobile);
+
+    setIsFormValid(
+      isEmailValid && isPasswordValid && isMobileValid && name !== ""
+    );
+
+    setEmailError(isEmailValid ? "" : "Định dạng email không đúng");
+    setPasswordError(isPasswordValid ? "" : "Mật khẩu phải từ 6 đến 12 ký tự");
+    setMobileError(
+      isMobileValid ? "" : "Số điện thoại phải chứa đúng 10 chữ số"
+    );
+  }
+
   function handleSignup(e) {
     e.preventDefault();
-    signup({ name, email, password, mobile });
-    navigate("/login"); // Điều hướng về trang login sau khi signup thành công
-
+    if (isFormValid) {
+      signup({ name, email, password, mobile })
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Đăng ký thành công",
+            text: "Vui lòng kiểm tra email của bạn để xác nhận",
+            confirmButtonText: "OK",
+          });
+        })
+        .catch((error) => {
+          setHasError(true);
+          Swal.fire({
+            icon: "error",
+            title: "Đăng ký thất bại",
+            text: "Đã xảy ra lỗi trong quá trình đăng ký. Vui lòng thử lại.",
+            confirmButtonText: "OK",
+          });
+        });
+    }
   }
+
   return (
     <Container>
       <Row>
         <Col md={6} className="signup__form--container">
-          <Form style={{ width: "100%" }} onSubmit={handleSignup}>
-            <h1>Create an account</h1>
-            {isError && <Alert variant="danger">{error.message}</Alert>}
+          <Form style={{ width: "100%" }}>
+            <h1>Tạo tài khoản</h1>
+            {hasError && (
+              <div className="error-message">
+                <p>Đã xảy ra lỗi trong quá trình đăng ký. Vui lòng thử lại.</p>
+              </div>
+            )}
             <Form.Group>
-              <Form.Label>Name</Form.Label>
+              <Form.Label>Tên</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Your Name"
+                placeholder="Tên của bạn"
                 value={name}
                 required
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  validateForm();
+                }}
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Mobile</Form.Label>
+              <Form.Label>Số điện thoại</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Mobile"
+                placeholder="Số điện thoại"
                 value={mobile}
                 required
-                onChange={(e) => setMobile(e.target.value)}
+                onChange={(e) => {
+                  setMobile(e.target.value);
+                  validateForm();
+                }}
+                pattern="[0-9]*" // Chỉ cho phép nhập số
+                onKeyPress={(e) => {
+                  const charCode = e.which ? e.which : e.keyCode;
+                  if (
+                    (charCode !== 8 && charCode !== 0 && charCode < 48) ||
+                    charCode > 57
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
+                className={hasError ? "is-invalid" : ""}
               />
+              {hasError && (
+                <div className="error-message">
+                  Vui lòng nhập số điện thoại hợp lệ.
+                </div>
+              )}
             </Form.Group>
             <Form.Group>
-              <Form.Label>Email Address</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
                 type="email"
-                placeholder="Enter Email"
+                placeholder="Nhập email"
                 value={email}
                 required
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateForm();
+                }}
               />
+              {emailError && <div className="error-message">{emailError}</div>}
             </Form.Group>
             <Form.Group>
-              <Form.Label>Password</Form.Label>
+              <Form.Label>Mật khẩu</Form.Label>
               <Form.Control
                 type="password"
-                placeholder="Enter Password"
+                placeholder="Nhập mật khẩu"
                 value={password}
                 required
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  validateForm();
+                }}
               />
+              {passwordError && (
+                <div className="error-message">{passwordError}</div>
+              )}
             </Form.Group>
             <Form.Group>
-              <Button type="submit" disabled={isLoading}>
-                Signup
+              <Button
+                type="submit"
+                disabled={!isFormValid}
+                onClick={handleSignup}
+              >
+                Đăng ký
               </Button>
             </Form.Group>
             <p className="">
-              Don't have an account? <Link to="/login">Login</Link>
+              Bạn chưa có tài khoản? <Link to="/login">Đăng nhập</Link>
             </p>
           </Form>
         </Col>

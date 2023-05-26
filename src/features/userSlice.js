@@ -56,7 +56,6 @@ export const userSlice = createSlice({
       appApi.endpoints.resetPassword.matchFulfilled,
       (_, { payload }) => payload
     );
-    
   },
 });
 

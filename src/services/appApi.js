@@ -99,11 +99,12 @@ export const appApi = createApi({
         method: "PATCH",
         body,
       })
-    })
+    }),
+    
   }),
 });
 
 
-export const {useSignupMutation , useLoginMutation, useCreateProductMutation , useAddToCartMutation,useDecreaseCartProductMutation,useIncreaseCartProductMutation,useRemoveFromCartMutation,useCreateOrderMutation , useDeleteProductMutation,useUpdateProductMutation ,useForgotPasswordMutation,useResetPasswordMutation } = appApi
+export const {useSignupMutation , useLoginMutation, useCreateProductMutation , useAddToCartMutation,useDecreaseCartProductMutation,useIncreaseCartProductMutation,useRemoveFromCartMutation,useCreateOrderMutation , useDeleteProductMutation,useUpdateProductMutation ,useForgotPasswordMutation,useResetPasswordMutation  } = appApi
 
 export default appApi;
