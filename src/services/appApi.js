@@ -20,91 +20,122 @@ export const appApi = createApi({
         body: user,
       }),
     }),
-    // creating product 
+    // creating product
     createProduct: builder.mutation({
-      query: (product)=>({
+      query: (product) => ({
         url: "/products",
         body: product,
-        method: "POST"
-      })
+        method: "POST",
+      }),
     }),
     // ad to cart
-    addToCart : builder.mutation({
-      query : (cartInfo) => ({
+    addToCart: builder.mutation({
+      query: (cartInfo) => ({
         url: "/products/add-to-cart",
         body: cartInfo,
-        method: "POST"
-      })
-    }), 
+        method: "POST",
+      }),
+    }),
     // remove from cart
-      removeFromCart : builder.mutation({
-      query : (body) => ({
+    removeFromCart: builder.mutation({
+      query: (body) => ({
         url: "/products/remove-from-cart",
         body,
-        method: "POST"
-      })
-    }), 
-    //delete product 
-    deleteProduct : builder.mutation({
-      query : ({product_id ,user_id}) => ({
-        url: `/prodycts/${product_id}`,
+        method: "POST",
+      }),
+    }),
+    //delete product
+    deleteProduct: builder.mutation({
+      query: ({ product_id, user_id }) => ({
+        url: `/products/${product_id}`,
         body: {
-          user_id
+          user_id,
         },
-        method: "DELETE"
-      })
-    }), 
+        method: "DELETE",
+      }),
+    }),
     // update product
-    updateProduct : builder.mutation({
-      query : (product) => ({
-        url: `/prodycts/${product.id}`,
+    updateProduct: builder.mutation({
+      query: (product) => ({
+        url: `/products/${product.id}`,
         body: product,
-        method: "PATCH"
-      })
-    }), 
-    // increase cart 
-    increaseCartProduct : builder.mutation({
-      query : (body) => ({
+        method: "PATCH",
+      }),
+    }),
+    // increase cart
+    increaseCartProduct: builder.mutation({
+      query: (body) => ({
         url: "/products/increase-cart",
         body,
-        method: "POST"
-      })
-    }), 
-    // decrease cart 
+        method: "POST",
+      }),
+    }),
+    // decrease cart
     decreaseCartProduct: builder.mutation({
-      query : (body) => ({
+      query: (body) => ({
         url: "/products/decrease-cart",
         body,
-        method: "POST"
-      })
-    }), 
-    // create order 
+        method: "POST",
+      }),
+    }),
+    // create order
     createOrder: builder.mutation({
-      query : (body) => ({
+      query: (body) => ({
         url: "/orders",
         body,
-        method: "POST"
-      })
-    }), 
-    forgotPassword:builder.mutation({
-      query: (body)=>({
-        url: 'users/forgotpassword',
+        method: "POST",
+      }),
+    }),
+    forgotPassword: builder.mutation({
+      query: (body) => ({
+        url: "users/forgotpassword",
         method: "POST",
         body,
-      })
+      }),
     }),
-    resetPassword:builder.mutation({
-      query: (body)=>({
-        url: 'users/resetpassword/',
+    resetPassword: builder.mutation({
+      query: (body) => ({
+        url: "users/resetpassword/",
         method: "PATCH",
         body,
-      })
+      }),
     }),
-    
+    // payDebtOrder: builder.mutation({
+    //   query: ({ _id, user_id }) => ({
+    //     url: `debts/debtOrders/${_id}/pay`,
+    //     body: {
+    //       user_id,
+    //     },
+    //     method: "POST",
+    //   }),
+    // }),
+    // deleteDebtOrder: builder.mutation({
+    //   query: ({ _id, user_id }) => ({
+    //     url: `debts/debtOrders/${_id}`,
+    //     body: {
+    //       user_id,
+    //     },
+    //     method: "DELETE",
+    //   }),
+    // }),
   }),
 });
 
-
-export const {useSignupMutation , useLoginMutation, useCreateProductMutation , useAddToCartMutation,useDecreaseCartProductMutation,useIncreaseCartProductMutation,useRemoveFromCartMutation,useCreateOrderMutation , useDeleteProductMutation,useUpdateProductMutation ,useForgotPasswordMutation,useResetPasswordMutation  } = appApi
+export const {
+  useSignupMutation,
+  useLoginMutation,
+  useCreateProductMutation,
+  useAddToCartMutation,
+  useDecreaseCartProductMutation,
+  useIncreaseCartProductMutation,
+  useRemoveFromCartMutation,
+  useCreateOrderMutation,
+  useDeleteProductMutation,
+  useUpdateProductMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+  // useDeleteDebtOrderMutation,
+  // usePayDebtOrderMutation,
+} = appApi;
 
 export default appApi;

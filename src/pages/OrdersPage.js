@@ -49,7 +49,7 @@ function OrdersPage() {
                         <tr>
                             <td>{order._id}</td>
                             <td>
-                                <Badge bg={`${order.status == "processing" ? "warning" : "success"}`} text="white">
+                                <Badge bg={`${order.status === "processing" ? "warning" : "success"}`} text="white">
                                     {order.status}
                                 </Badge>
                             </td>

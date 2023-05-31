@@ -36,7 +36,7 @@ function OrdersAdminPage() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("/orders", { params: { searchQuery } })
+      .get("/orders")
       .then(({ data }) => {
         // Sắp xếp danh sách đơn hàng theo thứ tự mới nhất đến cũ nhất
         const sortedOrders = data.sort((a, b) => b.date - a.date);
@@ -48,7 +48,7 @@ function OrdersAdminPage() {
         setLoading(false);
         console.log(error);
       });
-  }, [searchQuery]);
+  }, []);
   if (loading) {
     return <Loading />;
   }
@@ -57,7 +57,7 @@ function OrdersAdminPage() {
     return <h1 className="text-center pt-4">No orders yet</h1>;
   }
 
-  function TableRow({ _id, count, owner, total, status, products, address }) {
+  function TableRow({ _id, count, owner, total, status, products, address, paymentMethod }) {
     if (
       searchQuery &&
       owner?.name.toLowerCase().indexOf(searchQuery.toLowerCase()) === -1
@@ -81,6 +81,8 @@ function OrdersAdminPage() {
             <Badge bg="success">Shipped</Badge>
           )}
         </td>
+        <td>{paymentMethod}</td>
+
         <td>
           <span
             style={{ cursor: "pointer" }}
@@ -110,7 +112,9 @@ function OrdersAdminPage() {
             <th>Order Total</th>
             <th>Address</th>
             <th>STT</th>
+            <th>Bebt</th>
             <th>View</th>
+
           </tr>
         </thead>
         <tbody>
@@ -122,7 +126,7 @@ function OrdersAdminPage() {
             tablePagination={true}
           />
         </tbody>
-      </Table>
+      </Table> 
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -132,7 +136,7 @@ function OrdersAdminPage() {
           <div className="order-details__container d-flex justify-content-around py-2">
             <img
               src={order.pictures[0].url}
-              style={{ maxWidth: 100, height: 100, objectFit: "cover" }}
+              style={{ maxWidth: 100, height: 100, objectFit: "cover" }} alt=''
             />
             <p>
               <span>{order.count} x </span> {order.name}

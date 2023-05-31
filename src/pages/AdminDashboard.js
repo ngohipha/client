@@ -3,6 +3,7 @@ import { Container, Nav, Tab, Col, Row } from "react-bootstrap";
 import ClientsAdminPage from "../components/ClientsAdminPage";
 import DashboardProducts from "../components/DashboardProducts";
 import OrdersAdminPage from "../components/OrderAdminPage";
+import DashboardDebt from "../components/DashboardDebt";
 function AdminDashboard() {
     return (
         <Container>
@@ -19,6 +20,9 @@ function AdminDashboard() {
                             <Nav.Item>
                                 <Nav.Link eventKey="clients">Clients</Nav.Link>
                             </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="debt">Debts</Nav.Link>
+                            </Nav.Item>
                         </Nav>
                     </Col>
                     <Col sm={9}>
@@ -31,6 +35,9 @@ function AdminDashboard() {
                             </Tab.Pane>
                             <Tab.Pane eventKey="clients">
                                 <ClientsAdminPage />
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="debt">
+                                <DashboardDebt />
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>

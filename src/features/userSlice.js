@@ -56,6 +56,14 @@ export const userSlice = createSlice({
       appApi.endpoints.resetPassword.matchFulfilled,
       (_, { payload }) => payload
     );
+    // builder.addMatcher(
+    //   appApi.endpoints.payDebtOrder.matchFulfilled,
+    //   (_, { payload }) => payload
+    // );
+    // builder.addMatcher(
+    //   appApi.endpoints.deleteDebtOrder.matchFulfilled,
+    //   (_, { payload }) => payload
+    // );
   },
 });
 
