@@ -4,31 +4,68 @@ import { Button, Table } from "react-bootstrap";
 import axios from "../axios";
 import Loading from "./Loading";
 import Pagination from "./Pagination";
-
+import Swal from 'sweetalert2';
 
 function DashboardDebt() {
-
   const [loading, setLoading] = useState(false);
   const [debts, setDebts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   // const [payDebtOrder, { isLoading }] = usePayDebtOrderMutation();
   // const [deleteDebtOrder, { isLoading }] = useDeleteDebtOrderMutation();
- 
+
+
   function handlePay(_id, user_id) {
-    axios
-      .post(`/debts/${_id}/pay`, { user_id })
-      .then(({ data }) => setDebts(data))
-      .catch((e) => console.log(e));
+    Swal.fire({
+      title: 'Xác nhận thanh toán',
+      text: 'Bạn có chắc muốn thanh toán công nợ này?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Thanh toán',
+      cancelButtonText: 'Hủy',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .post(`/debts/debtOrders/${_id}/pay`, { user_id })
+          .then(({ data }) => {
+            const updatedDebts = debts.map((debt) =>
+              debt._id === _id ? data : debt
+            );
+            setDebts(updatedDebts);
+            Swal.fire('Thanh toán thành công', '', 'success');
+          })
+          .catch((error) => {
+            console.log(error);
+            Swal.fire('Lỗi', 'Đã xảy ra lỗi khi thanh toán', 'error');
+          });
+      }
+    });
   }
+  
   function deletePay(_id, user_id) {
-    axios
-      .delete(`/debts/${_id}`, { user_id })
-      .then(({ data }) => setDebts(data))
-      .catch((e) => console.log(e));
+    Swal.fire({
+      title: 'Xác nhận xoá',
+      text: 'Bạn có chắc muốn xoá công nợ này?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Xoá',
+      cancelButtonText: 'Hủy',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/debts/debtOrders/${_id}`, { data: { user_id } })
+          .then(() => {
+            const updatedDebts = debts.filter((debt) => debt._id !== _id);
+            setDebts(updatedDebts);
+            Swal.fire('Xoá thành công', '', 'success');
+          })
+          .catch((error) => {
+            console.log(error);
+            Swal.fire('Lỗi', 'Đã xảy ra lỗi khi xoá', 'error');
+          });
+      }
+    });
   }
 
- 
- 
   useEffect(() => {
     setLoading(true);
     axios
@@ -84,10 +121,20 @@ function DashboardDebt() {
           {/* Conditional rendering of action buttons */}
           {paymentStatus === "Ghi nợ" && (
             <>
-              <Button variant="primary" onClick={handlePay} >
+              <Button
+                variant="primary"
+                onClick={() => handlePay(_id, customerId)}
+              >
                 Thanh Toán
               </Button>
-              <Button variant="danger" onClick={deletePay} >
+            </>
+          )},
+           {paymentStatus === "Đã Thanh Toán" && (
+            <> 
+              <Button
+                variant="danger"
+                onClick={() => deletePay(_id, customerId)}
+              >
                 Xóa
               </Button>
             </>
