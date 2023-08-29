@@ -71,7 +71,6 @@ function App() {
           <Route path='/finalregister/:status' element={<FinalSignup />} />
           <Route path='/forgotpassword' element={<ForgotPassword />} />
           <Route path='/reset-password/:token' element={<ResetPassword />} />
-
           <Route path="*" element={<Home />} />
         </Routes>
       </BrowserRouter>

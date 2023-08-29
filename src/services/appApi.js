@@ -100,24 +100,13 @@ export const appApi = createApi({
         body,
       }),
     }),
-    // payDebtOrder: builder.mutation({
-    //   query: ({ _id, user_id }) => ({
-    //     url: `debts/debtOrders/${_id}/pay`,
-    //     body: {
-    //       user_id,
-    //     },
-    //     method: "POST",
-    //   }),
-    // }),
-    // deleteDebtOrder: builder.mutation({
-    //   query: ({ _id, user_id }) => ({
-    //     url: `debts/debtOrders/${_id}`,
-    //     body: {
-    //       user_id,
-    //     },
-    //     method: "DELETE",
-    //   }),
-    // }),
+    createDebts:builder.mutation({
+      query: (body) => ({
+        url: "debts/createDebt",
+        method:"POST",
+        body,
+      })
+    })
   }),
 });
 
@@ -134,8 +123,7 @@ export const {
   useUpdateProductMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
-  // useDeleteDebtOrderMutation,
-  // usePayDebtOrderMutation,
+  useCreateDebtsMutation
 } = appApi;
 
 export default appApi;

@@ -4,8 +4,8 @@ import { Button, Table } from "react-bootstrap";
 import axios from "../axios";
 import Loading from "./Loading";
 import Pagination from "./Pagination";
-import Swal from 'sweetalert2';
-
+import Swal from "sweetalert2";
+import ButtonDebtOrder from "../components/ButtonDebtOrder";
 function DashboardDebt() {
   const [loading, setLoading] = useState(false);
   const [debts, setDebts] = useState([]);
@@ -13,15 +13,14 @@ function DashboardDebt() {
   // const [payDebtOrder, { isLoading }] = usePayDebtOrderMutation();
   // const [deleteDebtOrder, { isLoading }] = useDeleteDebtOrderMutation();
 
-
   function handlePay(_id, user_id) {
     Swal.fire({
-      title: 'Xác nhận thanh toán',
-      text: 'Bạn có chắc muốn thanh toán công nợ này?',
-      icon: 'warning',
+      title: "Xác nhận thanh toán",
+      text: "Bạn có chắc muốn thanh toán công nợ này?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Thanh toán',
-      cancelButtonText: 'Hủy',
+      confirmButtonText: "Thanh toán",
+      cancelButtonText: "Hủy",
     }).then((result) => {
       if (result.isConfirmed) {
         axios
@@ -31,24 +30,24 @@ function DashboardDebt() {
               debt._id === _id ? data : debt
             );
             setDebts(updatedDebts);
-            Swal.fire('Thanh toán thành công', '', 'success');
+            Swal.fire("Thanh toán thành công", "", "success");
           })
           .catch((error) => {
             console.log(error);
-            Swal.fire('Lỗi', 'Đã xảy ra lỗi khi thanh toán', 'error');
+            Swal.fire("Lỗi", "Đã xảy ra lỗi khi thanh toán", "error");
           });
       }
     });
   }
-  
+
   function deletePay(_id, user_id) {
     Swal.fire({
-      title: 'Xác nhận xoá',
-      text: 'Bạn có chắc muốn xoá công nợ này?',
-      icon: 'warning',
+      title: "Xác nhận xoá",
+      text: "Bạn có chắc muốn xoá công nợ này?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Xoá',
-      cancelButtonText: 'Hủy',
+      confirmButtonText: "Xoá",
+      cancelButtonText: "Hủy",
     }).then((result) => {
       if (result.isConfirmed) {
         axios
@@ -56,11 +55,11 @@ function DashboardDebt() {
           .then(() => {
             const updatedDebts = debts.filter((debt) => debt._id !== _id);
             setDebts(updatedDebts);
-            Swal.fire('Xoá thành công', '', 'success');
+            Swal.fire("Xoá thành công", "", "success");
           })
           .catch((error) => {
             console.log(error);
-            Swal.fire('Lỗi', 'Đã xảy ra lỗi khi xoá', 'error');
+            Swal.fire("Lỗi", "Đã xảy ra lỗi khi xoá", "error");
           });
       }
     });
@@ -110,10 +109,11 @@ function DashboardDebt() {
     }
 
     return (
+     <>
       <tr>
         <td>{_id}</td>
         <td>{orderDate}</td>
-        <td>{customerId.name}</td>
+        <td>{customerId?.name}</td>
         <td>{totalAmount}</td>
         <td>{paymentStatus}</td>
         <td>{notes}</td>
@@ -128,9 +128,10 @@ function DashboardDebt() {
                 Thanh Toán
               </Button>
             </>
-          )},
-           {paymentStatus === "Đã Thanh Toán" && (
-            <> 
+          )}
+          ,
+          {paymentStatus === "Đã Thanh Toán" && (
+            <>
               <Button
                 variant="danger"
                 onClick={() => deletePay(_id, customerId)}
@@ -141,22 +142,23 @@ function DashboardDebt() {
           )}
         </td>
       </tr>
+     
+     </>
+      
     );
   }
   return (
-    <div>
+    <>
       <input
         type="text"
         placeholder="Search by client name"
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-
       <h1>Debt List</h1>
-
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>Order ID</th>
+            <th>Debt ID</th>
             <th>Order Date</th>
             <th>Customer ID</th>
             <th>Total Amount</th>
@@ -175,8 +177,12 @@ function DashboardDebt() {
           />
         </tbody>
       </Table>
-    </div>
+      <ButtonDebtOrder/>
+
+    </>
+    
   );
+
 }
 
 export default DashboardDebt;

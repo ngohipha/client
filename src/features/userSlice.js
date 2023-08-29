@@ -1,15 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-//appApi
+// appApi
 import appApi from "../services/appApi";
 
-const initialState = null;
+const initialState = {
+  user: null,
+  isAuthenticated: false,
+};
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logout: () => initialState,
+    loginSuccess: (state, action) => {
+      state.user = action.payload;
+      state.isAuthenticated = true;
+    },
+    logout: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+    },
     addNotification: (state, action) => {
       state.notifications.unshift(action.payload);
     },
@@ -26,47 +36,15 @@ export const userSlice = createSlice({
     );
     builder.addMatcher(
       appApi.endpoints.login.matchFulfilled,
-      (_, { payload }) => payload
+      (state, { payload }) => {
+        state.user = payload;
+        state.isAuthenticated = true;
+      }
     );
-    builder.addMatcher(
-      appApi.endpoints.addToCart.matchFulfilled,
-      (_, { payload }) => payload
-    );
-    builder.addMatcher(
-      appApi.endpoints.removeFromCart.matchFulfilled,
-      (_, { payload }) => payload
-    );
-    builder.addMatcher(
-      appApi.endpoints.increaseCartProduct.matchFulfilled,
-      (_, { payload }) => payload
-    );
-    builder.addMatcher(
-      appApi.endpoints.decreaseCartProduct.matchFulfilled,
-      (_, { payload }) => payload
-    );
-    builder.addMatcher(
-      appApi.endpoints.createOrder.matchFulfilled,
-      (_, { payload }) => payload
-    );
-    builder.addMatcher(
-      appApi.endpoints.forgotPassword.matchFulfilled,
-      (_, { payload }) => payload
-    );
-    builder.addMatcher(
-      appApi.endpoints.resetPassword.matchFulfilled,
-      (_, { payload }) => payload
-    );
-    // builder.addMatcher(
-    //   appApi.endpoints.payDebtOrder.matchFulfilled,
-    //   (_, { payload }) => payload
-    // );
-    // builder.addMatcher(
-    //   appApi.endpoints.deleteDebtOrder.matchFulfilled,
-    //   (_, { payload }) => payload
-    // );
+    // Other extraReducers for different API endpoints
   },
 });
 
-export const { logout, addNotification, resetNotifications  } =
+export const { loginSuccess, logout, addNotification, resetNotifications } =
   userSlice.actions;
 export default userSlice.reducer;
